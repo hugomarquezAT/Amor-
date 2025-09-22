@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Almendrita Hermosa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #fff8e1, #ffecb3);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .message-container {
+            text-align: center;
+            margin-bottom: 30px;
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            max-width: 90%;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 2s ease;
+        }
+        
+        h1 {
+            color: #ff6f00;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-family: 'Dancing Script', cursive;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .hearts {
+            font-size: 2rem;
+            color: #ff6f00;
+            margin-top: 15px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            text-align: center;
+            max-width: 90%;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .flower {
+            position: absolute;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .flower .petals {
+            width: 40px;
+            height: 40px;
+            background-color: #ffeb3b;
+            border-radius: 60% 60% 60% 60%;
+            position: relative;
+            animation: bloom 4s ease-out;
+            box-shadow: 0 0 12px rgba(255, 235, 59, 0.6);
+        }
+        
+        @keyframes bloom {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            80% { transform: scale(1.1) rotate(10deg); opacity: 0.9; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        .flower .center {
+            width: 15px;
+            height: 15px;
+            background-color: #ff9800;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .flower .stem {
+            width: 3px;
+            height: 60px;
+            background: linear-gradient(to bottom, #388e3c, #8bc34a);
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+        
+        .falling {
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            to { transform: translateY(calc(100vh + 100px)); }
+        }
+        
+        .btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #ff6f00;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #ff8f00;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="message-container">
+        <h1>Te amodoro mi Almendrita hermosa</h1>
+        <div class="hearts">💜💜💜</div>
+    </div>
+    
+    <div class="instructions">
+        
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.body;
+            const screenWidth = window.innerWidth;
+            const numFlowers = Math.floor(screenWidth / 15);
+            
+            // Crear flores iniciales
+            for (let i = 0; i < numFlowers; i++) {
+                createFlower();
+            }
+            
+            // Crear más flores cada 600ms
+            setInterval(createFlower, 600);
+            
+            function createFlower() {
+                const flower = document.createElement('div');
+                flower.className = 'flower falling';
+                
+                const petals = document.createElement('div');
+                petals.className = 'petals';
+                
+                const center = document.createElement('div');
+                center.className = 'center';
+                
+                const stem = document.createElement('div');
+                stem.className = 'stem';
+                
+                petals.appendChild(center);
+                flower.appendChild(petals);
+                flower.appendChild(stem);
+                
+                // Posición aleatoria
+                const leftPos = Math.random() * 100;
+                flower.style.left = `${leftPos}vw`;
+                
+                // Tamaño aleatorio
+                const size = 0.7 + Math.random() * 0.6;
+                flower.style.transform = `scale(${size})`;
+                
+                // Velocidad de caída aleatoria
+                const duration = 10 + Math.random() * 20;
+                flower.style.animationDuration = `${duration}s`;
+                
+                // Retraso inicial aleatorio
+                flower.style.animationDelay = `${Math.random() * 5}s`;
+                
+                body.appendChild(flower);
+                
+                // Eliminar la flor cuando termine su animación
+                setTimeout(() => {
+                    if (flower.parentNode) {
+                        flower.remove();
+                    }
+                }, duration * 1000 + 5000);
+            }
+        });
+    </script>
+</body>
+</html>
